@@ -1,4 +1,5 @@
-<p align="center"> Veterinary Clinic Management
+<p align="center"> 
+## Veterinary Clinic Management
 </p>
 
 ## About Project
