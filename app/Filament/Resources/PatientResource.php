@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PatientResource extends Resource
-{
+{ 
     protected static ?string $model = Patient::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -100,7 +100,9 @@ class PatientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePatients::route('/'),
+            'index' => Pages\ListPatients::route('/'),
+            'create' => Pages\CreatePatient::route('/create'),
+            'edit' => Pages\EditPatient::route('/{record}/edit'),
         ];
     }
     
@@ -111,3 +113,4 @@ class PatientResource extends Resource
       ];
     }
 }
+
