@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PatientResource extends Resource
-{
+{ 
     protected static ?string $model = Patient::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -23,17 +23,39 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('owner_id')
+                Forms\Components\Select::make('owner_id')
                     ->required()
-                    ->numeric(),
+                    ->relationship('owner', 'name')
+                    ->searchable()
+                    ->preload()
+              
+                    ->createOptionForm([
+                      Forms\Components\TextInput::make('name')
+                          ->required()
+                          ->maxLength(255),
+                      Forms\Components\TextInput::make('email')
+                          ->label('Email address')
+                          ->email()
+                          ->required()
+                          ->maxLength(255),
+                      Forms\Components\TextInput::make('phone')
+                          ->label('Phone number')
+                          ->tel()
+                          ->required(),
+                    ]),
                 Forms\Components\DatePicker::make('date_of_birth')
-                    ->required(),
+                    ->required()
+                    ->maxDate(now()),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                      'cat' => 'Cat',
+                      'dog' => 'Dog',
+                      'rabbit' => 'Rabbit'
+                    ]),
             ]);
     }
 
@@ -41,16 +63,17 @@ class PatientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('owner_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('date_of_birth')
-                    ->date()
-                    ->sortable(),
+                /**/
+                
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('date_of_birth')
+                    ->date('d/m/Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('owner.name')->label('Owner')                    
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -77,7 +100,17 @@ class PatientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePatients::route('/'),
+            'index' => Pages\ListPatients::route('/'),
+            'create' => Pages\CreatePatient::route('/create'),
+            'edit' => Pages\EditPatient::route('/{record}/edit'),
         ];
     }
+    
+   
+    public static function getRelations(): array {
+      return [
+        RelationManagers\TreatmentsRelationManager::class,
+      ];
+    }
 }
+
