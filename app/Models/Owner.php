@@ -11,6 +11,8 @@ class Owner extends Model
 {
     use HasFactory;
     
+    protected $fillable = ['name', 'email', 'phone'];
+    
     public function patients() {
       return $this->hasMany(Patient::class);
     }
