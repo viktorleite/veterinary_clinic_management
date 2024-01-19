@@ -1,5 +1,5 @@
 <p align="center"> 
-## Veterinary Clinic Management
+<h1>Veterinary Clinic Management</h1>
 </p>
 
 ## About Project
