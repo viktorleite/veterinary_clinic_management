@@ -12,9 +12,11 @@ use App\Casts\MoneyCast;
 class Treatment extends Model
 {
     use HasFactory;
-     protected $cast = [
-      'price' => MoneyCast:class
-     ]
+    protected $fillable = ['description', 'price', 'notes'];
+    
+    protected $cast = [
+      'price' => MoneyCast::class
+     ];
     public function patient() {
       return $this->belongsTo(Patient::class);
     }
