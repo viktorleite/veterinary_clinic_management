@@ -103,4 +103,11 @@ class PatientResource extends Resource
             'index' => Pages\ManagePatients::route('/'),
         ];
     }
+    
+   
+    public static function getRelations(): array {
+      return [
+        RelationManagers\TreatmentsRelationManager::class,
+      ];
+    }
 }
