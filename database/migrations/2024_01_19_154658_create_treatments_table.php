@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('treatments', function (Blueprint $table) {
-            $table->id();
+            $table->uuid();
+            $table->string('description');
+            $table->text('notes')->nullable();
+            $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete();
+            $table->unsignedInteger('price')->nullable();
             $table->timestamps();
         });
     }
